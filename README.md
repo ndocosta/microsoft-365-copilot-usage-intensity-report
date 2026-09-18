@@ -8,6 +8,18 @@ It exports Microsoft Graph usage data, enriches it with Microsoft Entra profile
 properties, stores daily CSV snapshots in SharePoint, and presents adoption
 trends in a ready-to-customize PBIP report.
 
+## Report preview
+
+The screenshots below use synthetic Contoso data.
+
+### Usage overview
+
+![Microsoft 365 Copilot usage intensity overview](Images/usage-overview.png)
+
+### User adoption analysis
+
+![Microsoft 365 Copilot user adoption analysis](Images/user-adoption-analysis.png)
+
 Users are grouped by prompts submitted during the rolling 28-day window:
 
 | Segment | Prompts submitted |
