@@ -1,0 +1,396 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "user_list",
+  "position": {
+    "x": 488,
+    "y": 198,
+    "z": 7000,
+    "height": 506,
+    "width": 776,
+    "tabOrder": 6000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Users"
+                    }
+                  },
+                  "Property": "DisplayName"
+                }
+              },
+              "queryRef": "Users.DisplayName",
+              "nativeQueryRef": "DisplayName"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Users"
+                    }
+                  },
+                  "Property": "UserPrincipalName"
+                }
+              },
+              "queryRef": "Users.UserPrincipalName",
+              "nativeQueryRef": "UserPrincipalName"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Users"
+                    }
+                  },
+                  "Property": "Department"
+                }
+              },
+              "queryRef": "Users.Department",
+              "nativeQueryRef": "Department"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Users"
+                    }
+                  },
+                  "Property": "JobTitle"
+                }
+              },
+              "queryRef": "Users.JobTitle",
+              "nativeQueryRef": "JobTitle"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Users"
+                    }
+                  },
+                  "Property": "UsageSegment"
+                }
+              },
+              "queryRef": "Users.UsageSegment",
+              "nativeQueryRef": "UsageSegment"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Users"
+                    }
+                  },
+                  "Property": "PromptsAllApps"
+                }
+              },
+              "queryRef": "Users.PromptsAllApps",
+              "nativeQueryRef": "PromptsAllApps"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Users"
+                    }
+                  },
+                  "Property": "ActiveUsageDays"
+                }
+              },
+              "queryRef": "Users.ActiveUsageDays",
+              "nativeQueryRef": "ActiveUsageDays"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Users"
+                    }
+                  },
+                  "Property": "LastActivityDate"
+                }
+              },
+              "queryRef": "Users.LastActivityDate",
+              "nativeQueryRef": "LastActivityDate"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Users"
+                  }
+                },
+                "Property": "PromptsAllApps"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "objects": {
+      "grid": [
+        {
+          "properties": {}
+        }
+      ],
+      "columnWidth": [
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "129.4622903877986D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Users.UserPrincipalName"
+          }
+        }
+      ],
+      "columnHeaders": [
+        {
+          "properties": {}
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'left'"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'User detail'"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#252423'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            },
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Directory attributes are joined to the latest D28 usage snapshot by UPN'"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#7A7890'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "9D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "stylePreset": [
+        {
+          "properties": {
+            "name": {
+              "expr": {
+                "Literal": {
+                  "Value": "'AlternatingRowsNew'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "873666b69e377629a79b",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Users"
+              }
+            },
+            "Property": "DisplayName"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "6ae3949a73406b7a50ed",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Users"
+              }
+            },
+            "Property": "UserPrincipalName"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "cebfcc0205d40a0cd428",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Users"
+              }
+            },
+            "Property": "Department"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "3539e867640006ec39ce",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Users"
+              }
+            },
+            "Property": "JobTitle"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "11db7fd3e204ce0117c8",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Users"
+              }
+            },
+            "Property": "UsageSegment"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "3145ccef83120c017542",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Users"
+              }
+            },
+            "Property": "PromptsAllApps"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "b63832805c2ec0523212",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Users"
+              }
+            },
+            "Property": "ActiveUsageDays"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "9e401b45c83a3a44547a",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Users"
+              }
+            },
+            "Property": "LastActivityDate"
+          }
+        },
+        "type": "Categorical"
+      }
+    ]
+  }
+}

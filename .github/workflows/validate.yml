@@ -1,0 +1,74 @@
+name: Validate
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: windows-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Validate PowerShell syntax
+        shell: pwsh
+        run: |
+          $parseErrors = @()
+          Get-ChildItem -Path . -Filter *.ps1 -Recurse | ForEach-Object {
+              $tokens = $null
+              $errors = $null
+              [void][System.Management.Automation.Language.Parser]::ParseFile(
+                  $_.FullName,
+                  [ref]$tokens,
+                  [ref]$errors
+              )
+              $parseErrors += $errors
+          }
+          if ($parseErrors.Count -gt 0) {
+              $parseErrors | Format-List
+              throw "PowerShell parsing failed with $($parseErrors.Count) error(s)."
+          }
+
+      - name: Run PSScriptAnalyzer
+        shell: pwsh
+        run: |
+          Install-Module PSScriptAnalyzer -Scope CurrentUser -Force
+          $findings = @(Invoke-ScriptAnalyzer -Path .\Automation -Recurse -Severity Warning,Error)
+          if ($findings.Count -gt 0) {
+              $findings | Format-Table -AutoSize
+              throw "PSScriptAnalyzer found $($findings.Count) warning or error finding(s)."
+          }
+
+      - name: Validate tracked JSON
+        shell: pwsh
+        run: |
+          $files = @(git ls-files '*.json')
+          foreach ($file in $files) {
+              Get-Content -LiteralPath $file -Raw | ConvertFrom-Json | Out-Null
+          }
+
+      - name: Check for environment-specific content
+        shell: pwsh
+        run: |
+          $forbiddenFiles = @(
+              'Automation/automation.config.json',
+              'Data/',
+              'Logs/'
+          )
+          $tracked = @(git ls-files)
+          foreach ($entry in $forbiddenFiles) {
+              if ($tracked -like "$entry*") {
+                  throw "Environment-specific content is tracked: $entry"
+              }
+          }
+          git grep -n -I -E 'm365cpi15450148|@microsoft\.com|CertificateThumbprint": "[A-Fa-f0-9]{40}' -- .
+          if ($LASTEXITCODE -eq 0) {
+              throw 'Potential tenant-specific or sensitive content was found.'
+          }
+          if ($LASTEXITCODE -ne 1) {
+              throw "git grep failed with exit code $LASTEXITCODE."
+          }

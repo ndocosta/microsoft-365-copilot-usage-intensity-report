@@ -1,0 +1,451 @@
+table Users
+	lineageTag: c2000000-0000-4000-8000-000000000001
+
+	measure 'Total Users' = COUNTROWS('Users')
+		formatString: #,##0
+		displayFolder: KPIs
+		lineageTag: f033df9a-93d5-48d0-b5d5-089c9bad2d04
+
+	measure 'High Adoption Users' = CALCULATE([Total Users], 'Users'[PromptsAllApps] >= 30)
+		formatString: #,##0
+		displayFolder: KPIs
+		lineageTag: 8a2314b3-91c8-424a-b65f-3ba4679a2aad
+
+	measure 'Developing Users' = CALCULATE([Total Users], 'Users'[PromptsAllApps] >= 10, 'Users'[PromptsAllApps] < 30)
+		formatString: #,##0
+		displayFolder: KPIs
+		lineageTag: 1bff5b69-1b50-4913-84c8-46a0d31588b3
+
+	measure 'Low Adoption Users' = CALCULATE([Total Users], 'Users'[PromptsAllApps] < 10)
+		formatString: #,##0
+		displayFolder: KPIs
+		lineageTag: 5685a412-fa56-4efe-8e8a-3900719c03a2
+
+	measure 'Active Users' = CALCULATE([Total Users], NOT ISBLANK('Users'[LastActivityDate]))
+		formatString: #,##0
+		displayFolder: KPIs
+		lineageTag: b8b7883a-5350-43b1-bc5d-abdec2ee0a54
+
+	measure 'Total Prompts' = SUM('Users'[PromptsAllApps])
+		formatString: #,##0
+		displayFolder: KPIs
+		lineageTag: edf1a26f-4d53-479b-8186-fbddd2e3f0bf
+
+	measure 'Average Prompts per User' = DIVIDE([Total Prompts], [Total Users])
+		formatString: #,##0.0
+		displayFolder: KPIs
+		lineageTag: ab75d80f-6392-4799-97a2-dad468c97b07
+
+	measure 'High Adoption Rate' = DIVIDE([High Adoption Users], [Total Users])
+		formatString: 0.0%
+		displayFolder: KPIs
+		lineageTag: d18831e2-e82d-47f5-9874-2abe7151411a
+
+	measure 'Selected User' = SELECTEDVALUE('Users'[DisplayName], "Select one user")
+		displayFolder: Profile
+		lineageTag: 89debbb0-477e-4aa5-9874-23af57338531
+
+	measure 'Selected Segment' = SELECTEDVALUE('Users'[UsageSegment], "Multiple users")
+		displayFolder: Profile
+		lineageTag: 88f287f0-5304-4a7b-8078-3d4c65fa697c
+
+	measure 'Selected Prompts' = SELECTEDVALUE('Users'[PromptsAllApps])
+		formatString: #,##0
+		displayFolder: Profile
+		lineageTag: b33276ab-032c-4e2a-9555-479c37490c09
+
+	measure 'Selected Active Days' = SELECTEDVALUE('Users'[ActiveUsageDays])
+		formatString: #,##0
+		displayFolder: Profile
+		lineageTag: 56327051-7572-4037-ab7d-bc26553a90bb
+
+	measure 'Selected Department' = SELECTEDVALUE('Users'[Department], "Not available")
+		displayFolder: Profile
+		lineageTag: 8a59596d-0554-47c0-a470-0d3c7acc5c89
+
+	measure 'Selected Job Title' = SELECTEDVALUE('Users'[JobTitle], "Not available")
+		displayFolder: Profile
+		lineageTag: c7cfa640-279e-4b60-a273-3741063a6238
+
+	measure 'Selected Office' = SELECTEDVALUE('Users'[OfficeLocation], "Not available")
+		displayFolder: Profile
+		lineageTag: 70785e00-d3ec-489c-ad76-a621263bdf31
+
+	measure 'Selected Last Activity' = FORMAT(MAX('Users'[LastActivityDate]), "yyyy-MM-dd")
+		displayFolder: Profile
+		lineageTag: 8a9ba164-9408-468a-92b5-0c37aa619b56
+
+	measure 'Analysis Period Label' =
+			VAR EndDate =
+				CALCULATE(
+					MAX('Users'[ReportRefreshDate]),
+					REMOVEFILTERS('Users')
+				)
+			VAR StartDate = EndDate - 27
+			RETURN
+				IF(
+					ISBLANK(EndDate),
+					"Analysis window unavailable",
+					"Analysis window: "
+						& FORMAT(StartDate, "dd MMM yyyy")
+						& " - "
+						& FORMAT(EndDate, "dd MMM yyyy")
+						& " | Refreshed: "
+						& FORMAT(EndDate, "dd MMM yyyy")
+				)
+		displayFolder: Metadata
+		lineageTag: f435ca48-d9d8-493e-81fc-279491cd480a
+
+	column SnapshotDate
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 240fcfbc-0ac4-4263-a910-fb21cd3620fb
+		summarizeBy: none
+		sourceColumn: SnapshotDate
+
+		variation Variação
+			isDefault
+			relationship: 898e3f95-6d74-46c9-9362-41d11f3a59f0
+			defaultHierarchy: LocalDateTable_132c9a5b-cc6b-41a5-ab39-5d8c3692d25d.'Date Hierarchy'
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column ReportRefreshDate
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 642587a7-f114-43d7-b7f4-7c11c769bcb2
+		summarizeBy: none
+		sourceColumn: ReportRefreshDate
+
+		variation Variação
+			isDefault
+			relationship: 0f854a2c-4476-4392-9dd8-55d03ea3060d
+			defaultHierarchy: LocalDateTable_a967de05-6f1a-4068-bfee-ac81290fc028.'Date Hierarchy'
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column ReportPeriod
+		dataType: int64
+		lineageTag: a5ad0514-3361-4f7d-9bc0-45f715c70e72
+		summarizeBy: sum
+		sourceColumn: ReportPeriod
+
+		annotation SummarizationSetBy = Automatic
+
+	column UserPrincipalName
+		dataType: string
+		lineageTag: b3dd7432-e74d-4a7d-9004-fa62c7f57cf7
+		dataCategory: EmailAddress
+		summarizeBy: none
+		sourceColumn: UserPrincipalName
+
+	column DisplayName
+		dataType: string
+		lineageTag: 68aa484b-6cd0-4a35-a297-00a0ce8dde37
+		summarizeBy: none
+		sourceColumn: DisplayName
+
+	column Department
+		dataType: string
+		lineageTag: aeaaa065-28b9-4bde-94ea-3ad0b0546116
+		summarizeBy: none
+		sourceColumn: Department
+
+	column JobTitle
+		dataType: string
+		lineageTag: db4d2d29-1667-4bfe-8285-3ca5d953f835
+		summarizeBy: none
+		sourceColumn: JobTitle
+
+	column CompanyName
+		dataType: string
+		lineageTag: b9a38dcb-1a7f-4981-ad19-fca3d271a425
+		summarizeBy: none
+		sourceColumn: CompanyName
+
+	column OfficeLocation
+		dataType: string
+		lineageTag: 2041e583-94e7-4743-91a0-da8fa92c7c49
+		summarizeBy: none
+		sourceColumn: OfficeLocation
+
+	column AccountEnabled
+		dataType: boolean
+		lineageTag: 69ad8890-a0a6-468c-b309-1bb8abac01c2
+		summarizeBy: none
+		sourceColumn: AccountEnabled
+
+	column UserType
+		dataType: string
+		lineageTag: c25db84e-0b23-4832-a375-11f28905eb2e
+		summarizeBy: none
+		sourceColumn: UserType
+
+	column UsageSegment
+		dataType: string
+		lineageTag: 47d81605-9ba8-48c3-b3f3-4f104a3a22e8
+		summarizeBy: none
+		sourceColumn: UsageSegment
+
+	column PromptsAllApps
+		dataType: int64
+		formatString: #,##0
+		lineageTag: 1dc37dc0-b049-480f-877c-3ff61073a2ba
+		summarizeBy: sum
+		sourceColumn: PromptsAllApps
+
+		annotation SummarizationSetBy = Automatic
+
+	column PromptsCopilotChatWork
+		dataType: int64
+		formatString: #,##0
+		lineageTag: 2d63b435-1e2e-49ef-877d-c3352ae9a566
+		summarizeBy: sum
+		sourceColumn: PromptsCopilotChatWork
+
+		annotation SummarizationSetBy = Automatic
+
+	column PromptsCopilotChatWeb
+		dataType: int64
+		formatString: #,##0
+		lineageTag: 85049093-330c-4019-b53d-d62ad5344c4e
+		summarizeBy: sum
+		sourceColumn: PromptsCopilotChatWeb
+
+		annotation SummarizationSetBy = Automatic
+
+	column ActiveUsageDays
+		dataType: int64
+		formatString: #,##0
+		lineageTag: 1e653d09-cfb8-45a1-8260-697bc64c2b60
+		summarizeBy: sum
+		sourceColumn: ActiveUsageDays
+
+		annotation SummarizationSetBy = Automatic
+
+	column LastActivityDate
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: f7fee588-50c0-48bd-a761-f3390a5be90c
+		summarizeBy: none
+		sourceColumn: LastActivityDate
+
+		variation Variação
+			isDefault
+			relationship: 13261826-fe18-4957-ba56-b12f567ae32c
+			defaultHierarchy: LocalDateTable_9c35938f-9543-40d9-8159-5af9a245bd6c.'Date Hierarchy'
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Microsoft365CopilotLastActivityDate
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 9ae6003f-c634-4e48-8b57-2b13ec06f4bc
+		summarizeBy: none
+		sourceColumn: Microsoft365CopilotLastActivityDate
+
+		variation Variação
+			isDefault
+			relationship: 37aeab85-bf08-4e89-92ac-f50d53bc57bd
+			defaultHierarchy: LocalDateTable_c2b7e90a-87e3-4d01-9bff-c466b2e9e8a2.'Date Hierarchy'
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column CopilotChatLastActivityDate
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 76d8d0c7-2c60-4159-8856-6c3927458c0c
+		summarizeBy: none
+		sourceColumn: CopilotChatLastActivityDate
+
+		variation Variação
+			isDefault
+			relationship: ba59dd3d-9620-44d7-9f27-9e66a6ce0b71
+			defaultHierarchy: LocalDateTable_6012e3a6-ddb9-41c9-977b-7216ac04f063.'Date Hierarchy'
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column CopilotChatWorkLastActivityDate
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: b46221a1-bc9a-4ebd-814c-b4c8fe21d184
+		summarizeBy: none
+		sourceColumn: CopilotChatWorkLastActivityDate
+
+		variation Variação
+			isDefault
+			relationship: 3c72286d-d97d-4c80-a2bd-8e6909964c8b
+			defaultHierarchy: LocalDateTable_94e721d5-06c6-4ed4-967d-319c94813255.'Date Hierarchy'
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column CopilotChatWebLastActivityDate
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 69f25c27-001b-480b-8f4a-1580e28eafdc
+		summarizeBy: none
+		sourceColumn: CopilotChatWebLastActivityDate
+
+		variation Variação
+			isDefault
+			relationship: e4337679-33cf-48e1-80f1-2fba78bff161
+			defaultHierarchy: LocalDateTable_706db44f-ce95-43cc-be52-105781f0fa7b.'Date Hierarchy'
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column TeamsLastActivityDate
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 800d845c-1499-4bb7-9231-489a3ff6e427
+		summarizeBy: none
+		sourceColumn: TeamsLastActivityDate
+
+		variation Variação
+			isDefault
+			relationship: 95fddd0d-7a82-4444-9053-cf038d79ca7a
+			defaultHierarchy: LocalDateTable_efae43ec-07c8-465c-a471-c3362896f212.'Date Hierarchy'
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column WordLastActivityDate
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: b646c13f-c676-42ce-9403-c23794089f10
+		summarizeBy: none
+		sourceColumn: WordLastActivityDate
+
+		variation Variação
+			isDefault
+			relationship: 1f35303a-b2bd-4802-b89e-249a50f53248
+			defaultHierarchy: LocalDateTable_a07e9de3-e158-45a1-899e-d1426a9a7873.'Date Hierarchy'
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column ExcelLastActivityDate
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: a99f8c03-0246-44fa-b2cb-07ef27f7da45
+		summarizeBy: none
+		sourceColumn: ExcelLastActivityDate
+
+		variation Variação
+			isDefault
+			relationship: 63592066-8ae8-4d68-ae32-7a8e8cee9f72
+			defaultHierarchy: LocalDateTable_c0ab68e7-d2f7-4e5d-a60e-8183baf54858.'Date Hierarchy'
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column PowerPointLastActivityDate
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: f258638d-ba15-4d9f-838c-0c9a36060310
+		summarizeBy: none
+		sourceColumn: PowerPointLastActivityDate
+
+		variation Variação
+			isDefault
+			relationship: 87bf2360-8918-402b-a139-d038cad89ec0
+			defaultHierarchy: LocalDateTable_2389b06d-90ee-4e1b-a84a-0591068c9744.'Date Hierarchy'
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column OutlookLastActivityDate
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 82c6ed57-596d-4109-8e68-e98934fa015c
+		summarizeBy: none
+		sourceColumn: OutlookLastActivityDate
+
+		variation Variação
+			isDefault
+			relationship: 4293ea9a-02a9-4eb4-ae0a-96c37c09d0ed
+			defaultHierarchy: LocalDateTable_265f25e9-3e04-4d1f-923d-563e5bdd188c.'Date Hierarchy'
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column OneNoteLastActivityDate
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 952820b8-096a-44de-8c9a-1ce2cbeac283
+		summarizeBy: none
+		sourceColumn: OneNoteLastActivityDate
+
+		variation Variação
+			isDefault
+			relationship: b6fcf954-6935-4a6c-95e3-7e16051d44de
+			defaultHierarchy: LocalDateTable_c8af7231-85c1-477e-821b-402097e1af1d.'Date Hierarchy'
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column LoopLastActivityDate
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: f6dd3bc6-44c0-43fe-a28d-b131ebb5ef53
+		summarizeBy: none
+		sourceColumn: LoopLastActivityDate
+
+		variation Variação
+			isDefault
+			relationship: c94a19ca-4468-40dc-86ad-e9a5bfefdcc6
+			defaultHierarchy: LocalDateTable_001df12c-2d51-4452-9211-1756f8d374f9.'Date Hierarchy'
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column EdgeLastActivityDate
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 692a77a0-b7ec-4dd7-a1a0-71d40ced2f77
+		summarizeBy: none
+		sourceColumn: EdgeLastActivityDate
+
+		variation Variação
+			isDefault
+			relationship: 3d4d68de-930a-44da-9e65-51cd71465861
+			defaultHierarchy: LocalDateTable_49a1e330-be35-499c-9c93-a6a6a9578560.'Date Hierarchy'
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column CopilotAgentLastActivityDate
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 8f1b55c0-6fc0-4784-84b5-df1e9a8ef1c6
+		summarizeBy: none
+		sourceColumn: CopilotAgentLastActivityDate
+
+		variation Variação
+			isDefault
+			relationship: 0dd1f42a-c7f5-4a2d-a859-6cd16f540abc
+			defaultHierarchy: LocalDateTable_ab45d9ab-cf2a-47ca-ab9f-0d18269f59b7.'Date Hierarchy'
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition Users = m
+		mode: import
+		source =
+				let
+					Files = SharePoint.Files(SharePointSiteUrl, [ApiVersion = 15]),
+					UsageFiles = Table.SelectRows(Files, each Text.EndsWith(Text.Lower([Name]), ".csv") and Text.Contains(Text.Lower([Folder Path]), Text.Lower("/" & SharePointLibraryName & "/UserSnapshots/"))),
+					UsageParsed = Table.AddColumn(UsageFiles, "Rows", each Table.PromoteHeaders(Csv.Document([Content], [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]), [PromoteAllScalars = true])),
+					UsageCombined = Table.Combine(UsageParsed[Rows]),
+					UsageBlanks = Table.ReplaceValue(UsageCombined, "", null, Replacer.ReplaceValue, Table.ColumnNames(UsageCombined)),
+					UsageTyped = Table.TransformColumnTypes(UsageBlanks, {{"SnapshotDate", type date}, {"ReportRefreshDate", type date}, {"ReportPeriod", Int64.Type}, {"PromptsAllApps", Int64.Type}, {"PromptsCopilotChatWork", Int64.Type}, {"PromptsCopilotChatWeb", Int64.Type}, {"ActiveUsageDays", Int64.Type}, {"LastActivityDate", type date}, {"Microsoft365CopilotLastActivityDate", type date}, {"CopilotChatLastActivityDate", type date}, {"CopilotChatWorkLastActivityDate", type date}, {"CopilotChatWebLastActivityDate", type date}, {"TeamsLastActivityDate", type date}, {"WordLastActivityDate", type date}, {"ExcelLastActivityDate", type date}, {"PowerPointLastActivityDate", type date}, {"OutlookLastActivityDate", type date}, {"OneNoteLastActivityDate", type date}, {"LoopLastActivityDate", type date}, {"EdgeLastActivityDate", type date}, {"CopilotAgentLastActivityDate", type date}}, "en-US"),
+					ForD28 = Table.SelectRows(UsageTyped, each [ReportPeriod] = 28),
+					LatestUsageDate = List.Max(ForD28[SnapshotDate]),
+					LatestUsage = Table.SelectRows(ForD28, each [SnapshotDate] = LatestUsageDate),
+					UsageCore = Table.RemoveColumns(LatestUsage, {"DisplayName", "Department", "JobTitle", "CompanyName", "OfficeLocation", "AccountEnabled", "UserType"}, MissingField.Ignore),
+					DirectoryFiles = Table.SelectRows(Files, each Text.EndsWith(Text.Lower([Name]), ".csv") and Text.Contains(Text.Lower([Folder Path]), Text.Lower("/" & SharePointLibraryName & "/DirectorySnapshots/"))),
+					DirectoryParsed = Table.AddColumn(DirectoryFiles, "Rows", each Table.PromoteHeaders(Csv.Document([Content], [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]), [PromoteAllScalars = true])),
+					DirectoryCombined = Table.Combine(DirectoryParsed[Rows]),
+					DirectoryBlanks = Table.ReplaceValue(DirectoryCombined, "", null, Replacer.ReplaceValue, Table.ColumnNames(DirectoryCombined)),
+					DirectoryTyped = Table.TransformColumnTypes(DirectoryBlanks, {{"SnapshotDate", type date}, {"AccountEnabled", type logical}}, "en-US"),
+					LatestDirectoryDate = List.Max(DirectoryTyped[SnapshotDate]),
+					LatestDirectory = Table.SelectRows(DirectoryTyped, each [SnapshotDate] = LatestDirectoryDate),
+					Joined = Table.NestedJoin(UsageCore, {"UserPrincipalName"}, LatestDirectory, {"UserPrincipalName"}, "Directory", JoinKind.LeftOuter),
+					Expanded = Table.ExpandTableColumn(Joined, "Directory", {"DisplayName", "Department", "JobTitle", "CompanyName", "OfficeLocation", "AccountEnabled", "UserType"}, {"DirectoryDisplayName", "Department", "JobTitle", "CompanyName", "OfficeLocation", "AccountEnabled", "UserType"}),
+					WithDisplayName = Table.AddColumn(Expanded, "DisplayName", each if [DirectoryDisplayName] <> null then [DirectoryDisplayName] else [ReportDisplayName], type text),
+					Cleaned = Table.RemoveColumns(WithDisplayName, {"DirectoryDisplayName", "ReportDisplayName"}, MissingField.Ignore)
+				in
+					Cleaned
+
+	annotation PBI_ResultType = Exception
+

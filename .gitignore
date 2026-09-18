@@ -1,0 +1,10 @@
+**/.pbi/localSettings.json
+**/.pbi/cache.abf
+Automation/automation.config.json
+Data/
+Logs/
+.DS_Store
+Thumbs.db
+.vscode/
+*.clixml
+*.log

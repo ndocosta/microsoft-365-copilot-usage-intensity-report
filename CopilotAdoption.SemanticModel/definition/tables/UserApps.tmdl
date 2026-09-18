@@ -1,0 +1,52 @@
+table UserApps
+	lineageTag: c4000000-0000-4000-8000-000000000001
+
+	column UserPrincipalName
+		dataType: string
+		lineageTag: 1f247f05-f67b-4d7c-ac45-7aeff4764b45
+		summarizeBy: none
+		sourceColumn: UserPrincipalName
+
+	column App
+		dataType: string
+		lineageTag: 453d31ce-ea7a-4e3c-a334-b31302e7fa3d
+		summarizeBy: none
+		sourceColumn: App
+
+	column LastActivityDate
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: a25b4dcc-ba0b-482c-9cb3-8e6097ccf21b
+		summarizeBy: none
+		sourceColumn: LastActivityDate
+
+		variation Variação
+			isDefault
+			relationship: 0ea5160d-9dd7-433b-8be9-1c556f56ebfd
+			defaultHierarchy: LocalDateTable_484b38f0-8bac-4c80-a347-1f3a3558c8a6.'Date Hierarchy'
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column DaysSinceActivity
+		dataType: int64
+		formatString: #,##0
+		lineageTag: 4a85eb11-90b9-49fc-a76b-73642ebfafbb
+		summarizeBy: sum
+		sourceColumn: DaysSinceActivity
+
+		annotation SummarizationSetBy = Automatic
+
+	partition UserApps = m
+		mode: import
+		source =
+				let
+					Source = Users,
+					Selected = Table.SelectColumns(Source, {"UserPrincipalName", "Microsoft365CopilotLastActivityDate", "CopilotChatLastActivityDate", "TeamsLastActivityDate", "WordLastActivityDate", "ExcelLastActivityDate", "PowerPointLastActivityDate", "OutlookLastActivityDate", "OneNoteLastActivityDate", "LoopLastActivityDate", "EdgeLastActivityDate", "CopilotAgentLastActivityDate"}),
+					Unpivoted = Table.UnpivotOtherColumns(Selected, {"UserPrincipalName"}, "App", "LastActivityDate"),
+					CleanNames = Table.TransformColumns(Unpivoted, {{"App", each Text.Replace(Text.Replace(_, "LastActivityDate", ""), "Microsoft365", "Microsoft 365 "), type text}}),
+					AddedDays = Table.AddColumn(CleanNames, "DaysSinceActivity", each if [LastActivityDate] = null then null else Duration.Days(Date.From(DateTime.LocalNow()) - Date.From([LastActivityDate])), Int64.Type)
+				in
+					AddedDays
+
+	annotation PBI_ResultType = Table
+

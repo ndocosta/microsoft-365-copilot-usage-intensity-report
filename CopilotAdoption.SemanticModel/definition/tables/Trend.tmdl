@@ -1,0 +1,203 @@
+table Trend
+	lineageTag: c3000000-0000-4000-8000-000000000001
+
+	measure 'Daily Prompts' = SUM('Trend'[PromptsSubmitted])
+		formatString: #,##0
+		lineageTag: 44e0c643-87fe-448f-963a-2db282fe845d
+
+	measure 'Daily Active Users' = MAX('Trend'[ActiveUsers])
+		formatString: #,##0
+		lineageTag: ea366132-2091-40a2-84b7-d0a0c8377078
+
+	measure 'Daily Enabled Users' = MAX('Trend'[EnabledUsers])
+		formatString: #,##0
+		lineageTag: 8188761f-1478-46ca-84a8-cc60ecc89501
+
+	column SnapshotDate
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 7bcb021d-821a-4b79-873b-f4c88ec8b7b0
+		summarizeBy: none
+		sourceColumn: SnapshotDate
+
+		variation Variação
+			isDefault
+			relationship: 4702666f-e314-47a0-a3ed-e057998bfde4
+			defaultHierarchy: LocalDateTable_8bf52db9-89db-4b30-a211-0af2cddb6307.'Date Hierarchy'
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column ReportRefreshDate
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 76938460-125a-4966-b51c-770b1d4dca7b
+		summarizeBy: none
+		sourceColumn: ReportRefreshDate
+
+		variation Variação
+			isDefault
+			relationship: 6fad049a-e8ae-475c-947f-532343fe5d01
+			defaultHierarchy: LocalDateTable_62e249e8-84f6-4c54-b8eb-3c6b6a64b602.'Date Hierarchy'
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column ReportDate
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: ef7ca591-81df-4f1e-950a-fb560419b16d
+		summarizeBy: none
+		sourceColumn: ReportDate
+
+		variation Variação
+			isDefault
+			relationship: c97fdc19-ba4a-4d38-9d7e-3362c7d824ee
+			defaultHierarchy: LocalDateTable_cca07520-641a-4149-ba57-3bd8905c98b5.'Date Hierarchy'
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column ReportPeriod
+		dataType: int64
+		lineageTag: 4ad81ca4-9fe6-47c2-9120-67eab5b54bfc
+		summarizeBy: sum
+		sourceColumn: ReportPeriod
+
+		annotation SummarizationSetBy = Automatic
+
+	column EnabledUsers
+		dataType: int64
+		lineageTag: 21bb76ce-2cc4-4999-9eaa-cf0397b98313
+		summarizeBy: sum
+		sourceColumn: EnabledUsers
+
+		annotation SummarizationSetBy = Automatic
+
+	column ActiveUsers
+		dataType: int64
+		lineageTag: de1c1c55-8bc8-4689-9487-4b6083566a47
+		summarizeBy: sum
+		sourceColumn: ActiveUsers
+
+		annotation SummarizationSetBy = Automatic
+
+	column Microsoft365CopilotActiveUsers
+		dataType: int64
+		lineageTag: 8633239e-e598-49c7-8052-760d65c617ad
+		summarizeBy: sum
+		sourceColumn: Microsoft365CopilotActiveUsers
+
+		annotation SummarizationSetBy = Automatic
+
+	column CopilotChatActiveUsers
+		dataType: int64
+		lineageTag: 5749c17c-5da7-4450-ba3e-d324815d459d
+		summarizeBy: sum
+		sourceColumn: CopilotChatActiveUsers
+
+		annotation SummarizationSetBy = Automatic
+
+	column CopilotChatWorkActiveUsers
+		dataType: int64
+		lineageTag: 0ee26e0f-ffc0-488b-aef8-24897682e20c
+		summarizeBy: sum
+		sourceColumn: CopilotChatWorkActiveUsers
+
+		annotation SummarizationSetBy = Automatic
+
+	column CopilotChatWebActiveUsers
+		dataType: int64
+		lineageTag: cfb3b6c8-3f42-42a7-84b4-8525d5380df4
+		summarizeBy: sum
+		sourceColumn: CopilotChatWebActiveUsers
+
+		annotation SummarizationSetBy = Automatic
+
+	column TeamsActiveUsers
+		dataType: int64
+		lineageTag: 2c4bf394-21d4-4991-97e4-34d2164ff4f7
+		summarizeBy: sum
+		sourceColumn: TeamsActiveUsers
+
+		annotation SummarizationSetBy = Automatic
+
+	column WordActiveUsers
+		dataType: int64
+		lineageTag: b11353e4-e704-4e79-88e4-a12c3492f92d
+		summarizeBy: sum
+		sourceColumn: WordActiveUsers
+
+		annotation SummarizationSetBy = Automatic
+
+	column ExcelActiveUsers
+		dataType: int64
+		lineageTag: be2873c0-9795-4dd8-94a5-0e32b3e47e8a
+		summarizeBy: sum
+		sourceColumn: ExcelActiveUsers
+
+		annotation SummarizationSetBy = Automatic
+
+	column PowerPointActiveUsers
+		dataType: int64
+		lineageTag: bc271e74-7bd2-4893-b1fc-89fdc336d55c
+		summarizeBy: sum
+		sourceColumn: PowerPointActiveUsers
+
+		annotation SummarizationSetBy = Automatic
+
+	column OutlookActiveUsers
+		dataType: int64
+		lineageTag: 23d0b26a-906b-4d68-a0ff-5788c5b6d48d
+		summarizeBy: sum
+		sourceColumn: OutlookActiveUsers
+
+		annotation SummarizationSetBy = Automatic
+
+	column OneNoteActiveUsers
+		dataType: int64
+		lineageTag: 1eefb80e-9587-4256-a287-00bb1db4bc59
+		summarizeBy: sum
+		sourceColumn: OneNoteActiveUsers
+
+		annotation SummarizationSetBy = Automatic
+
+	column LoopActiveUsers
+		dataType: int64
+		lineageTag: a9087b49-892b-467e-b696-600339239812
+		summarizeBy: sum
+		sourceColumn: LoopActiveUsers
+
+		annotation SummarizationSetBy = Automatic
+
+	column EdgeActiveUsers
+		dataType: int64
+		lineageTag: a5751c6c-c6e1-4466-9e34-c267e02ff7de
+		summarizeBy: sum
+		sourceColumn: EdgeActiveUsers
+
+		annotation SummarizationSetBy = Automatic
+
+	column PromptsSubmitted
+		dataType: int64
+		lineageTag: 8cad1b39-3e07-46b5-a3b8-250caee8481b
+		summarizeBy: sum
+		sourceColumn: PromptsSubmitted
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Trend = m
+		mode: import
+		source =
+				let
+					Files = SharePoint.Files(SharePointSiteUrl, [ApiVersion = 15]),
+					CsvFiles = Table.SelectRows(Files, each Text.EndsWith(Text.Lower([Name]), ".csv") and Text.Contains(Text.Lower([Folder Path]), Text.Lower("/" & SharePointLibraryName & "/TrendSnapshots/"))),
+					Parsed = Table.AddColumn(CsvFiles, "Rows", each Table.PromoteHeaders(Csv.Document([Content], [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]), [PromoteAllScalars = true])),
+					Combined = Table.Combine(Parsed[Rows]),
+					Blanks = Table.ReplaceValue(Combined, "", null, Replacer.ReplaceValue, Table.ColumnNames(Combined)),
+					Typed = Table.TransformColumnTypes(Blanks, {{"SnapshotDate", type date}, {"ReportRefreshDate", type date}, {"ReportDate", type date}, {"ReportPeriod", Int64.Type}, {"EnabledUsers", Int64.Type}, {"ActiveUsers", Int64.Type}, {"Microsoft365CopilotActiveUsers", Int64.Type}, {"CopilotChatActiveUsers", Int64.Type}, {"CopilotChatWorkActiveUsers", Int64.Type}, {"CopilotChatWebActiveUsers", Int64.Type}, {"TeamsActiveUsers", Int64.Type}, {"WordActiveUsers", Int64.Type}, {"ExcelActiveUsers", Int64.Type}, {"PowerPointActiveUsers", Int64.Type}, {"OutlookActiveUsers", Int64.Type}, {"OneNoteActiveUsers", Int64.Type}, {"LoopActiveUsers", Int64.Type}, {"EdgeActiveUsers", Int64.Type}, {"PromptsSubmitted", Int64.Type}}, "en-US"),
+					ForD28 = Table.SelectRows(Typed, each [ReportPeriod] = 28),
+					LatestSnapshot = List.Max(ForD28[SnapshotDate]),
+					Latest = Table.SelectRows(ForD28, each [SnapshotDate] = LatestSnapshot)
+				in
+					Latest
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,9 @@
+expression SharePointSiteUrl = "https://contoso.sharepoint.com/sites/CopilotReports" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: c1000000-0000-4000-8000-000000000001
+
+	annotation PBI_ResultType = Text
+
+expression SharePointLibraryName = "UsageData" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: c1000000-0000-4000-8000-000000000002
+
+	annotation PBI_ResultType = Text

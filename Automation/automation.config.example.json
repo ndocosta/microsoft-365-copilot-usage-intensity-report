@@ -1,0 +1,11 @@
+{
+  "TenantId": "contoso.onmicrosoft.com",
+  "ClientId": "<app-registration-client-id>",
+  "CertificateThumbprint": "<current-user-certificate-thumbprint>",
+  "SharePointSiteUrl": "https://contoso.sharepoint.com/sites/CopilotReports",
+  "SharePointLibraryName": "UsageData",
+  "SharePointDriveId": "<sharepoint-document-library-drive-id>",
+  "Period": "D28",
+  "LocalDataRoot": "C:\\CopilotAdoption\\Data",
+  "LogRoot": "C:\\CopilotAdoption\\Logs"
+}

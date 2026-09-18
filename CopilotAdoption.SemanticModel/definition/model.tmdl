@@ -1,0 +1,40 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	discourageImplicitMeasures
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["Users","Trend","UserApps","SharePointSiteUrl","SharePointLibraryName"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+ref table Users
+ref table Trend
+ref table UserApps
+ref table DateTableTemplate_429db76f-fd48-45f9-a1de-31ef63936008
+ref table LocalDateTable_132c9a5b-cc6b-41a5-ab39-5d8c3692d25d
+ref table LocalDateTable_a967de05-6f1a-4068-bfee-ac81290fc028
+ref table LocalDateTable_9c35938f-9543-40d9-8159-5af9a245bd6c
+ref table LocalDateTable_c2b7e90a-87e3-4d01-9bff-c466b2e9e8a2
+ref table LocalDateTable_6012e3a6-ddb9-41c9-977b-7216ac04f063
+ref table LocalDateTable_94e721d5-06c6-4ed4-967d-319c94813255
+ref table LocalDateTable_706db44f-ce95-43cc-be52-105781f0fa7b
+ref table LocalDateTable_efae43ec-07c8-465c-a471-c3362896f212
+ref table LocalDateTable_a07e9de3-e158-45a1-899e-d1426a9a7873
+ref table LocalDateTable_c0ab68e7-d2f7-4e5d-a60e-8183baf54858
+ref table LocalDateTable_2389b06d-90ee-4e1b-a84a-0591068c9744
+ref table LocalDateTable_265f25e9-3e04-4d1f-923d-563e5bdd188c
+ref table LocalDateTable_c8af7231-85c1-477e-821b-402097e1af1d
+ref table LocalDateTable_001df12c-2d51-4452-9211-1756f8d374f9
+ref table LocalDateTable_49a1e330-be35-499c-9c93-a6a6a9578560
+ref table LocalDateTable_ab45d9ab-cf2a-47ca-ab9f-0d18269f59b7
+ref table LocalDateTable_8bf52db9-89db-4b30-a211-0af2cddb6307
+ref table LocalDateTable_62e249e8-84f6-4c54-b8eb-3c6b6a64b602
+ref table LocalDateTable_cca07520-641a-4149-ba57-3bd8905c98b5
+ref table LocalDateTable_484b38f0-8bac-4c80-a347-1f3a3558c8a6
+
