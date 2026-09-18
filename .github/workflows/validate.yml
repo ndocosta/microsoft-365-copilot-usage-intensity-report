@@ -12,7 +12,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Validate PowerShell syntax
         shell: pwsh
@@ -65,10 +65,15 @@ jobs:
                   throw "Environment-specific content is tracked: $entry"
               }
           }
-          git grep -n -I -E 'm365cpi15450148|@microsoft\.com|CertificateThumbprint": "[A-Fa-f0-9]{40}' -- .
-          if ($LASTEXITCODE -eq 0) {
-              throw 'Potential tenant-specific or sensitive content was found.'
+          $patterns = @(
+              ('m365' + 'cpi15450148'),
+              ('@micro' + 'soft\.com'),
+              ('CertificateThumbprint": "[A-Fa-f0-9]' + '{40}')
+          )
+          $matches = foreach ($file in $tracked) {
+              Select-String -LiteralPath $file -Pattern $patterns -ErrorAction SilentlyContinue
           }
-          if ($LASTEXITCODE -ne 1) {
-              throw "git grep failed with exit code $LASTEXITCODE."
+          if ($matches) {
+              $matches | Format-Table Path, LineNumber, Line -AutoSize
+              throw 'Potential tenant-specific or sensitive content was found.'
           }
