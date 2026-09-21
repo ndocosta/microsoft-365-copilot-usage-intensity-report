@@ -95,6 +95,24 @@ UsageData/
     `-- DirectoryUsers-YYYY-MM-DD.csv
 ```
 
+## Privacy notice
+
+This solution processes and displays Microsoft 365 Copilot usage data at the
+individual user level, including user identity, organizational attributes,
+activity dates, and prompts submitted. Access to the exported CSV files,
+SharePoint library, Power BI semantic model, and report must be restricted to
+authorized users with a legitimate business need.
+
+Organizations that do not require user-level identification should enable
+concealed user, group, and site names in Microsoft 365 usage reports. When
+concealment is enabled, identities are pseudonymized. This improves privacy but
+prevents the report from reliably joining Copilot usage data with Microsoft
+Entra user profiles.
+
+Each organization is responsible for ensuring that the collection, retention,
+access, and use of this data complies with its internal policies and applicable
+privacy, employment, and regulatory requirements.
+
 ## Important limitations
 
 - The usage report covers licensed Microsoft 365 Copilot users. It does not
